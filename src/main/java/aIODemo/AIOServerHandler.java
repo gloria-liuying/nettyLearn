@@ -36,6 +36,7 @@ public class AIOServerHandler implements CompletionHandler<AsynchronousSocketCha
         exc.printStackTrace();
     }
 
+    //项目中服务器返回的结果应该根据客户端的请求数据计算得到，不是等待控制台输入。
     private void doWrite(AsynchronousSocketChannel result){
         try{
             ByteBuffer buffer = ByteBuffer.allocate(1024);

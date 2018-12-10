@@ -34,6 +34,7 @@ public class AIOClient {
            ByteBuffer buffer = ByteBuffer.allocate(1024);
            buffer.put(line.getBytes("UTF-8"));
            buffer.flip();
+           //write方法是一个异步操作，具体实现由os实现。可增加get方法，实现阻塞，等待OS的写操作结束
            channel.write(buffer);
        }catch (UnsupportedEncodingException e){
            e.printStackTrace();
@@ -45,6 +46,7 @@ public class AIOClient {
         try{
             //get为阻塞
             channel.read(buffer).get();
+//            channel.read();
             buffer.flip();
             System.out.println("from server :"+new String(buffer.array(),"UTF-8"));
         }catch (InterruptedException e){

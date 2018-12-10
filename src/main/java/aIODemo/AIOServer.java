@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * <p>  </p>
- *
+ *AIO方式使用于连接数目较长的架构，充分调动os参与并发操作。数据会有粘连
  * @author ly
  * @since 2018/10/7
  */
