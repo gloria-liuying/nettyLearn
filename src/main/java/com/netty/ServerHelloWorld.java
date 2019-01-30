@@ -5,6 +5,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 
 /**
  * <p>  </p>
@@ -35,9 +37,9 @@ public class ServerHelloWorld {
         //设置缓冲区大小，单位是字节
         bootstrap.option(ChannelOption.SO_BACKLOG,1024);
         //SO_SNDBUF发送缓冲区，SO_RCVBUF接收缓冲区，SO_KEEPALIVE开启心跳检测（保证连接有效）
-        bootstrap.option(ChannelOption.SO_SNDBUF,16*1024)
-                .option(ChannelOption.SO_RCVBUF,16*1024)
-                .option(ChannelOption.SO_KEEPALIVE,true);
+//        bootstrap.option(ChannelOption.SO_SNDBUF,16*1024)
+//                .option(ChannelOption.SO_RCVBUF,16*1024)
+//                .option(ChannelOption.SO_KEEPALIVE,true);
     }
 
     /**
@@ -54,7 +56,15 @@ public class ServerHelloWorld {
                 ch.pipeline().addLast(acceptorsHandlers);
             }
         });
-        ChannelFuture future = bootstrap.bind(port).sync();
+        ChannelFuture future = bootstrap.bind(port).sync().addListener(new GenericFutureListener<Future<? super Void>>() {
+            public void operationComplete(Future<? super Void> future) {
+                if (future.isSuccess()) {
+                    System.out.println("端口绑定成功!");
+                } else {
+                    System.err.println("端口绑定失败!");
+                }
+            }
+        });
         return future;
     }
 
